@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { PROJECT, whatsappLink } from "./data";
+import { AREAS } from "./areas";
 
 export default function Footer() {
   return (
@@ -28,6 +30,16 @@ export default function Footer() {
             </a>
           </p>
         </div>
+      </div>
+      <div className="footer-seo-links" style={{ textAlign: "center", fontSize: 13, lineHeight: 1.9, padding: "8px 16px" }}>
+        {AREAS.map((a, i) => (
+          <span key={a.slug}>
+            {i > 0 && " · "}
+            <Link href={`/${a.slug}`}>{a.h1}</Link>
+          </span>
+        ))}
+        <br />
+        Also by Comex Homes: <a href="https://www.astanaresidence.com/">Astana Residence apartments, Ngara</a>
       </div>
       <div className="bottom">
         <a href="https://www.comexhomes.ke/" target="_blank" rel="noreferrer">

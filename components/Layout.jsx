@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from "next/script";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Navigation from "./Navigation";
@@ -33,7 +34,21 @@ export default function Layout({ children }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
+          <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION} />
+        )}
+        {process.env.NEXT_PUBLIC_BING_VERIFICATION && <meta name="msvalidate.01" content={process.env.NEXT_PUBLIC_BING_VERIFICATION} />}
       </Head>
+      {/* Vercel Web Analytics (enable it in the Vercel dashboard) */}
+      <Script src="/_vercel/insights/script.js" strategy="afterInteractive" />
+      {process.env.NEXT_PUBLIC_GA4_ID && (
+        <>
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`} strategy="afterInteractive" />
+          <Script id="ga4" strategy="afterInteractive">
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA4_ID}');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';var ev=h.indexOf('tel:')===0?'call_click':(h.indexOf('wa.me')>-1?'whatsapp_click':(h.indexOf('.pdf')>-1?'brochure_download':null));if(ev)gtag('event',ev,{page_path:location.pathname});});`}
+          </Script>
+        </>
+      )}
       <Navigation />
       <main className="main">{children}</main>
       <Footer />
