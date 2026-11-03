@@ -5,15 +5,26 @@ import { PROJECT, whatsappLink } from "@/components/data";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", interest: "Buying to build", message: "" });
+  const [status, setStatus] = useState("idle");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const submit = (e) => {
+  // Sent to /api/enquiry, which passes it to the Zoho "Website Enquiry" form; Zoho emails info@comexhomes.ke.
+  const submit = async (e) => {
     e.preventDefault();
-    const msg =
-      `Hello Comex Homes, I would like to register interest in Lukenya Ridge.\n` +
-      `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nInterest: ${form.interest}` +
-      (form.message ? `\nMessage: ${form.message}` : "");
-    window.open(whatsappLink(msg), "_blank");
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error || "failed");
+      setForm({ name: "", phone: "", email: "", interest: "Buying to build", message: "" });
+      setStatus("sent");
+    } catch (err) {
+      setStatus("error");
+    }
   };
 
   return (
@@ -53,22 +64,45 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="contact-form">
+        <form className="contact-form" onSubmit={submit}>
           <h3>Register Interest</h3>
-          {/* Website Enquiry form in Zoho Forms. Every submission is emailed to info@comexhomes.ke. */}
-          <iframe
-            title="Website Enquiry"
-            aria-label="Website Enquiry"
-            src="https://forms.zohopublic.com/balozi/form/WebsiteEnquiry/formperma/lMJLwfCsL2F8murEt4IYFdRYU6FWs7a6Xe9Ai3gVfw8?Website=https%3A%2F%2Fwww.lukenyaridge.com"
-            style={{ width: "100%", height: "900px", border: "none", background: "#fff", borderRadius: 8 }}
-          />
-          <p style={{ marginTop: 12 }}>
-            Prefer WhatsApp?{" "}
-            <a href={whatsappLink()} target="_blank" rel="noreferrer">
-              Chat with us
-            </a>
-          </p>
-        </div>
+          <label>
+            Full name
+            <input required value={form.name} onChange={set("name")} />
+          </label>
+          <label>
+            Phone number
+            <input required type="tel" value={form.phone} onChange={set("phone")} />
+          </label>
+          <label>
+            Email
+            <input required type="email" value={form.email} onChange={set("email")} />
+          </label>
+          <label>
+            I am interested in
+            <select value={form.interest} onChange={set("interest")}>
+              <option>Buying to build</option>
+              <option>Investment</option>
+              <option>Development</option>
+              <option>Booking a site visit</option>
+            </select>
+          </label>
+          <label>
+            Message (optional)
+            <textarea rows="3" value={form.message} onChange={set("message")} />
+          </label>
+          <button className="btn" type="submit" disabled={status === "sending"}>
+            {status === "sending" ? "sending..." : "send enquiry"}
+          </button>
+          {status === "sent" ? (
+            <p style={{ marginTop: 12 }}>Thank you. Your enquiry has been sent and our team will contact you shortly.</p>
+          ) : null}
+          {status === "error" ? (
+            <p style={{ marginTop: 12, color: "#b91c1c" }}>
+              Sorry, your message did not go through. Please call 0709 501 501 or chat with us on WhatsApp.
+            </p>
+          ) : null}
+        </form>
       </section>
     </>
   );
