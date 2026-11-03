@@ -53,37 +53,22 @@ export default function Contact() {
           </p>
         </div>
 
-        <form className="contact-form" onSubmit={submit}>
+        <div className="contact-form">
           <h3>Register Interest</h3>
-          <label>
-            Full name
-            <input required value={form.name} onChange={set("name")} />
-          </label>
-          <label>
-            Phone number
-            <input required type="tel" value={form.phone} onChange={set("phone")} />
-          </label>
-          <label>
-            Email
-            <input type="email" value={form.email} onChange={set("email")} />
-          </label>
-          <label>
-            I am interested in
-            <select value={form.interest} onChange={set("interest")}>
-              <option>Buying to build</option>
-              <option>Investment</option>
-              <option>Development</option>
-              <option>Booking a site visit</option>
-            </select>
-          </label>
-          <label>
-            Message (optional)
-            <textarea rows="3" value={form.message} onChange={set("message")} />
-          </label>
-          <button className="btn" type="submit">
-            send via whatsapp
-          </button>
-        </form>
+          {/* Website Enquiry form in Zoho Forms. Every submission is emailed to info@comexhomes.ke. */}
+          <iframe
+            title="Website Enquiry"
+            aria-label="Website Enquiry"
+            src="https://forms.zohopublic.com/balozi/form/WebsiteEnquiry/formperma/lMJLwfCsL2F8murEt4IYFdRYU6FWs7a6Xe9Ai3gVfw8?Website=https%3A%2F%2Fwww.lukenyaridge.com"
+            style={{ width: "100%", height: "900px", border: "none", background: "#fff", borderRadius: 8 }}
+          />
+          <p style={{ marginTop: 12 }}>
+            Prefer WhatsApp?{" "}
+            <a href={whatsappLink()} target="_blank" rel="noreferrer">
+              Chat with us
+            </a>
+          </p>
+        </div>
       </section>
     </>
   );
