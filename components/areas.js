@@ -77,5 +77,5 @@ export const FAQS = [
   { q: "What does the estate include?", a: "A gated estate concept with 12M and 9M internal roads, a 25M wide road frontage, a 2,025 square metre community plot and a 3M drainage wayleave." },
   { q: "Who is selling Lukenya Ridge?", a: "Lukenya Ridge is developed and sold by Comex Homes, the developer of Nyayo View Suites, Balozi Suites and The Reveal in Nairobi." },
   { q: "Can I pay in US dollars?", a: "Yes. Comex Homes accepts payment in US dollars or Kenya shillings by bank transfer." },
-  { q: "How do I book a site visit?", a: "Call or WhatsApp 0709 501 501, or email info@comexhomes.ke, to book a guided site visit or a video tour." },
+  { q: "How do I book a site visit?", a: "Call or WhatsApp the Comex Homes sales line 0709 501 501, or email info@comexhomes.ke, to book a guided site visit or a video tour." },
 ];
